@@ -1,11 +1,9 @@
-# main.py
-
 import cv2 as cv
 import torch
 from ultralytics import YOLO
 from buzzer import PassiveBuzzer
 
-# Load model YOLO
+
 model = YOLO('C:/Users/Admin/OneDrive/Máy tính/buzzer_AI/YOLOv8/yolov8x.pt', task='detect')
 
 if torch.cuda.is_available():
@@ -14,10 +12,8 @@ if torch.cuda.is_available():
 else:
     print("⚠️ No GPU, using CPU")
 
-# Khởi tạo buzzer (passive), không có pin GPIO nên giả lập
 buzzer = PassiveBuzzer()
 
-# Mở webcam
 cap = cv.VideoCapture(0)
 
 while True:
