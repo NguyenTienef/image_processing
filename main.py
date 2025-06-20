@@ -6,7 +6,7 @@ from ultralytics import YOLO
 from buzzer import PassiveBuzzer
 
 # Load model YOLO
-model = YOLO('yolov8n.pt')
+model = YOLO('C:/Users/Admin/OneDrive/Máy tính/buzzer_AI/YOLOv8/yolov8x.pt', task='detect')
 
 if torch.cuda.is_available():
     model.to('cuda')
