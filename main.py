@@ -5,7 +5,7 @@ import time
 from ultralytics import YOLO
 import matplotlib.pyplot as plt
 
-# Load model
+
 model = YOLO('C:/Users/Admin/OneDrive/Máy tính/buzzer_AI/YOLOv8/yolov8x.pt')
 
 if torch.cuda.is_available():
@@ -14,18 +14,19 @@ if torch.cuda.is_available():
 else:
     print("⚠️ Không có GPU, model chạy trên CPU")
 
-# Mở webcam
+
 cap = cv.VideoCapture(0)
 buzzer_timeline = []
 
 def beep():
-    os.system("echo /a")  # đơn giản, hoặc dùng playsound nếu muốn âm thanh tùy chỉnh
+    os.system("echo /a") 
 
 start_time = time.time()
 while True:
     ret, frame = cap.read()
     frame = cv.flip(frame, 1) 
-    frame = cv.resize(frame, (640, 480))  # Resize frame to 640x480
+    frame = cv.resize(frame, (640, 480))  
+
     if not ret:
         break
 
@@ -40,7 +41,7 @@ while True:
         cv.putText(frame, label, (x1, y1 - 10),
                    cv.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
 
-        # Nếu phát hiện người
+        
         if model.names[cls] == 'person':
             beep()
             buzzer_timeline.append(time.time() - start_time)
@@ -53,7 +54,7 @@ while True:
 cap.release()
 cv.destroyAllWindows()
 
-# Vẽ biểu đồ thời điểm còi kêu
+
 plt.figure(figsize=(10, 3))
 plt.eventplot(buzzer_timeline, orientation='horizontal', colors='r')
 plt.title("Buzzer Activated Timeline")

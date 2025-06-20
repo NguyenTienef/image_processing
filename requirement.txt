@@ -1,5 +1,5 @@
-ultralytics==8.0.206
-torch>=1.13
-opencv-python
-matplotlib
-gpiozero
+ultralytics==8.1.37
+torch==2.3.0
+opencv-python==4.9.0.80
+matplotlib==3.8.4
+gpiozero==1.7.1
