@@ -24,6 +24,8 @@ def beep():
 start_time = time.time()
 while True:
     ret, frame = cap.read()
+    frame = cv.flip(frame, 1) 
+    frame = cv.resize(frame, (640, 480))  # Resize frame to 640x480
     if not ret:
         break
 
