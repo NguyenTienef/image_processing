@@ -1,3 +1,4 @@
 # Bỏ môi trường ảo
 venv/
 YOLOv8/
+__pycache__/
