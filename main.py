@@ -1,32 +1,27 @@
+# main.py
+
 import cv2 as cv
 import torch
-import os
-import time
 from ultralytics import YOLO
-import matplotlib.pyplot as plt
+from buzzer import PassiveBuzzer
 
-
-model = YOLO('C:/Users/Admin/OneDrive/Máy tính/buzzer_AI/YOLOv8/yolov8x.pt')
+# Load model YOLO
+model = YOLO('yolov8n.pt')
 
 if torch.cuda.is_available():
     model.to('cuda')
-    print("🔥 Model đang chạy trên GPU")
+    print("🔥 Model running on GPU")
 else:
-    print("⚠️ Không có GPU, model chạy trên CPU")
+    print("⚠️ No GPU, using CPU")
 
+# Khởi tạo buzzer (passive), không có pin GPIO nên giả lập
+buzzer = PassiveBuzzer()
 
+# Mở webcam
 cap = cv.VideoCapture(0)
-buzzer_timeline = []
 
-def beep():
-    os.system("echo /a") 
-
-start_time = time.time()
 while True:
     ret, frame = cap.read()
-    frame = cv.flip(frame, 1) 
-    frame = cv.resize(frame, (640, 480))  
-
     if not ret:
         break
 
@@ -41,23 +36,18 @@ while True:
         cv.putText(frame, label, (x1, y1 - 10),
                    cv.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
 
-        
-        if model.names[cls] == 'person':
-            beep()
-            buzzer_timeline.append(time.time() - start_time)
+        name = model.names[cls]
 
-    cv.imshow('YOLOv8 with Buzzer Sim', frame)
+        # Buzzer logic
+        if name == 'person':
+            buzzer.play_note('B')  # Si
+        elif name in ['cat', 'dog', 'horse', 'sheep', 'cow']:  # animal class
+            buzzer.play_note('A')  # La
+
+    cv.imshow('YOLOv8 + Passive Buzzer', frame)
 
     if cv.waitKey(1) & 0xFF == ord('q'):
         break
 
 cap.release()
 cv.destroyAllWindows()
-
-
-plt.figure(figsize=(10, 3))
-plt.eventplot(buzzer_timeline, orientation='horizontal', colors='r')
-plt.title("Buzzer Activated Timeline")
-plt.xlabel("Time (s)")
-plt.yticks([])
-plt.show()
