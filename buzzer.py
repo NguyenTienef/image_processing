@@ -1,5 +1,3 @@
-# buzzer_control.py
-
 import os
 import time
 
@@ -25,10 +23,10 @@ class PassiveBuzzer:
         freq = self.NOTE_FREQ.get(note.upper(), 440)
         if self.buzzer:
             self.buzzer.frequency = freq
-            self.buzzer.value = 0.5  # 50% duty
+            self.buzzer.value = 0.5  
             time.sleep(duration)
             self.buzzer.off()
         else:
             print(f"[SIM] Playing note {note} ({freq}Hz) for {duration}s")
-            os.system("echo \a")  # beep thay thế
+            os.system("echo \a")  
             time.sleep(duration)
